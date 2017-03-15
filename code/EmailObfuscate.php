@@ -1,10 +1,9 @@
 <?php
 /**
- * Description
- *
  * @package silverstripe
- * @subpackage mysite
+ * @subpackage silverstripe-email-obfuscator
  */
+
 class EmailObfuscate extends Object
 {
     protected $email = null;

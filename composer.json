@@ -7,7 +7,7 @@
     "license": "The MIT License (MIT)",
     "authors": [
         {
-            "name": "Ralph Slooten",
+            "name": "Web Team",
             "homepage": "http://www.PlatoCreative.org/"
         }
     ],
@@ -16,5 +16,8 @@
     },
     "require": {
         "silverstripe/framework": "3.*"
+    },
+    "extra": {
+        "installer-name": "email-obfuscator"
     }
 }

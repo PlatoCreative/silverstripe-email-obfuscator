@@ -94,9 +94,7 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
         $email = EmailObfuscate::create($matches[3])
             ->setText($matches[8])
             ->setAttributes($matches[1].' '.$matches[7]);
-        // Debug::dump($matches);
         $this->list->Push($email);
-        // Debug::dump($email);
         return $email->getLink();
     }
 
@@ -107,7 +105,6 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
         }
         $email = EmailObfuscate::create($matches[0])
             ->setText($matches[0]);
-        // Debug::dump($email);
         $this->list->Push($email);
         return $email->getText();
     }
