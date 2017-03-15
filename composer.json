@@ -1,0 +1,20 @@
+{
+    "name": "plato-creative/silverstripe-email-obfuscator",
+    "description": "Email obfuscator for SilverStripe",
+    "type": "silverstripe-module",
+    "homepage": "https://github.com/PlatoCreative/silverstripe-email-obfuscator",
+    "keywords": ["silverstripe", "email-obfuscator", "email-encoder", "spam", "anti-spam", "spamprotection"],
+    "license": "The MIT License (MIT)",
+    "authors": [
+        {
+            "name": "Ralph Slooten",
+            "homepage": "http://www.PlatoCreative.org/"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/PlatoCreative/silverstripe-email-obfuscator/issues"
+    },
+    "require": {
+        "silverstripe/framework": "3.*"
+    }
+}
