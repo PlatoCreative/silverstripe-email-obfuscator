@@ -25,7 +25,7 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
      */
     public function postRequest(SS_HTTPRequest $request, SS_HTTPResponse $response, DataModel $model)
     {
-        if (preg_match('/text\/html/', $response->getHeader('Content-Type')) && $request->routeParams()['Controller'] == 'AdminRootController') {
+        if (preg_match('/text\/html/', $response->getHeader('Content-Type')) && $request->routeParams()['Controller'] != 'AdminRootController') {
             $response->setBody(
                 $this->ObfuscateEmails($response->getBody())
             );
