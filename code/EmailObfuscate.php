@@ -64,8 +64,7 @@ class EmailObfuscate extends Object
         $id = $this->id;
         $attributes = implode(' ',$this->attributes);
         $text = $this->text;
-        $fake_email = "gotcha@". $_SERVER['SERVER_NAME'];
-        return "<a href='mailto:$fake_email' data-obfuscate='$id' $attributes>$text</a>";
+        return "<a href='mailto:*' data-obfuscate='$id' $attributes>$text</a>";
     }
 
     public function getText()
