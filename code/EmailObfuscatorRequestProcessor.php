@@ -1,17 +1,7 @@
 <?php
 /**
- * SilverStripe Email Obfuscator
- * =============================
- *
- * RequestProcessor filter to automatically encode all email
- * addresses (including mailto: links) in outputted HTML.
- * Switches between ASCII & hexadecimal encoding.
- *
- * Usage: Simply extract to your SilverStripe website path
- * and run a ?flush=1
- *
- * License: MIT-style license http://opensource.org/licenses/MIT
- * Authors: Techno Joy development team (www.technojoy.co.nz)
+ * @package silverstripe
+ * @subpackage silverstripe-email-obfuscator
  */
 
 class EmailObfuscatorRequestProcessor implements RequestFilter
@@ -67,9 +57,8 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
                 setTimeout(function(){
                     if(linklist.length){
                         for (var object in linklist) {
-                            if (linklist.hasOwnProperty(object)) {
+                            if (linklist.hasOwnProperty(object) && linklist[object] != 1) {
                                 email = emaillist[linklist[object].getAttribute('data-obfuscate')];
-                                console.log(email);
                                 linklist[object].setAttribute('href', 'mailto:' + email[1] + '@' + email[0]);
                                 linklist[object].removeAttribute('data-obfuscate');
                             }
@@ -77,7 +66,7 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
                     }
                     if(plaintextlist.length){
                         for (var object in plaintextlist) {
-                            if (plaintextlist.hasOwnProperty(object)) {
+                            if (plaintextlist.hasOwnProperty(object) && plaintextlist[object] != 1) {
                                 email = emaillist[plaintextlist[object].getAttribute('data-obfuscate')];
                                 plaintextlist[object].outerHTML = email[1] + '@' + email[0];
                             }
