@@ -60,32 +60,26 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
         }
         $list = Convert::array2json($list);
         $script = "<script type='text/javascript'>
-            window.addEventListener('DOMContentLoaded', function(){
-                var emaillist = $list,
-                    linklist = document.querySelectorAll('a[data-obfuscate]'),
-                    plaintextlist = document.querySelectorAll('span[data-obfuscate]');
-                setTimeout(function(){
-                    if(linklist.length){
-                        for (var object in linklist) {
-                            if (linklist.hasOwnProperty(object)) {
-                                email = emaillist[linklist[object].getAttribute('data-obfuscate')];
-                                console.log(email);
-                                linklist[object].setAttribute('href', 'mailto:' + email[1] + '@' + email[0]);
-                                linklist[object].removeAttribute('data-obfuscate');
-                            }
-                        }
+        window.addEventListener('DOMContentLoaded', function(){
+            var emaillist = $list;
+            setTimeout(function(){
+                $('a[data-obfuscate]').each(function(index){
+                    var emailid = $(this).data('obfuscate'),
+                        email = emaillist[emailid];
+                    if(email != 'undefined') {
+                        $(this).attr('href', 'mailto:' + email[1] + '@' + email[0]).attr('data-obfuscate', '');
                     }
-                    if(plaintextlist.length){
-                        for (var object in plaintextlist) {
-                            if (plaintextlist.hasOwnProperty(object)) {
-                                email = emaillist[plaintextlist[object].getAttribute('data-obfuscate')];
-                                plaintextlist[object].outerHTML = email[1] + '@' + email[0];
-                            }
-                        }
+                });
+                $('span[data-obfuscate]').each(function(index){
+                    var emailid = $(this).data('obfuscate'),
+                        email = emaillist[emailid];
+                    if(email != 'undefined') {
+                        $(this).html(email[1] + '@' + email[0]);
                     }
-                }, 2000);
-            });
-            </script>";
+                });
+            }, 2000);
+        });
+        </script>";
         $html = str_ireplace('</body>', $script.'</body>', $html);
         return $html;
     }
