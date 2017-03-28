@@ -1,17 +1,7 @@
 <?php
 /**
- * SilverStripe Email Obfuscator
- * =============================
- *
- * RequestProcessor filter to automatically encode all email
- * addresses (including mailto: links) in outputted HTML.
- * Switches between ASCII & hexadecimal encoding.
- *
- * Usage: Simply extract to your SilverStripe website path
- * and run a ?flush=1
- *
- * License: MIT-style license http://opensource.org/licenses/MIT
- * Authors: Techno Joy development team (www.technojoy.co.nz)
+ * @package silverstripe
+ * @subpackage silverstripe-email-obfuscator
  */
 
 class EmailObfuscatorRequestProcessor implements RequestFilter
