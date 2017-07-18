@@ -16,8 +16,14 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
     public function postRequest(SS_HTTPRequest $request, SS_HTTPResponse $response, DataModel $model)
     {
         if (preg_match('/text\/html/', $response->getHeader('Content-Type')) && $request->routeParams()['Controller'] != 'AdminRootController') {
+            list($head, $body) = explode('</head>', $response->getBody());
+            $html = array(
+                $head => $this->BasicObfuscateEmails($head),
+                $body => $this->JSObfuscateEmails($body)
+            );
+
             $response->setBody(
-                $this->ObfuscateEmails($response->getBody())
+                implode('</head>', $html)
             );
         }
     }
@@ -27,7 +33,56 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
      * @param string
      * @return string
      */
-    public function ObfuscateEmails($html)
+    public function BasicObfuscateEmails($html)
+    {
+        $reg = '/[:_a-z0-9-+]+(\.[_a-z0-9-+]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})/i';
+        if (preg_match_all($reg, $html, $matches)) {
+            $searchstring = $matches[0];
+            for ($i=0; $i < count($searchstring); $i++) {
+                $html = preg_replace(
+                    '/' . $searchstring[$i] . '/',
+                    $this->encode($searchstring[$i]),
+                    $html
+                );
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * Obscure email address.
+     *
+     * @param string The email address
+     * @return string The encoded (ASCII & hexadecimal) email address
+     */
+    protected function encode($originalString)
+    {
+        $encodedString = '';
+        $nowCodeString = '';
+        $originalLength = strlen($originalString);
+        for ($i = 0; $i < $originalLength; $i++) {
+            $encodeMode = ($i % 2 == 0) ? 1 : 2; // Switch encoding odd/even
+            switch ($encodeMode) {
+                case 1: // Decimal code
+                    $nowCodeString = '&#' . ord($originalString[$i]) . ';';
+                    break;
+                case 2: // Hexadecimal code
+                    $nowCodeString = '&#x' . dechex(ord($originalString[$i])) . ';';
+                    break;
+                default:
+                    return 'ERROR: wrong encoding mode.';
+            }
+            $encodedString .= $nowCodeString;
+        }
+        return $encodedString;
+    }
+
+    /*
+     * Obfuscate all matching emails
+     * @param string
+     * @return string
+     */
+    public function JSObfuscateEmails($html)
     {
         $this->list = ArrayList::create();
         $regex_email = '[:_a-z0-9-+]+(\.[_a-z0-9-+]+)*@[a-z0-9-]+(\.[a-z0-9]+)*(\.[a-z]{2,4})';
