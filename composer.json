@@ -3,8 +3,15 @@
     "description": "Email obfuscator for SilverStripe",
     "type": "silverstripe-module",
     "homepage": "https://github.com/PlatoCreative/silverstripe-email-obfuscator",
-    "keywords": ["silverstripe", "email-obfuscator", "email-encoder", "spam", "anti-spam", "spamprotection"],
-    "license": "The MIT License (MIT)",
+    "keywords": [
+        "silverstripe",
+        "email-obfuscator",
+        "email-encoder",
+        "spam",
+        "anti-spam",
+        "spamprotection"
+    ],
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Web Team",
