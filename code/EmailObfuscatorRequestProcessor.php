@@ -90,13 +90,14 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
         $regex_email_query = "(?:\?[A-Za-z0-9_= %\.\-\~\_\&;\!\*\(\)\'#&]*)?)";
         $regex_email_href = "href\s*=\s*(['\"])mailto:(".$regex_email.$regex_email_query."\\2";
         $whitespace = "\s*";
-        $plaintext_regex = "/".$regex_email."/i";
         $tag_regex = "/<a\s+".$regex_attributes/* 1 */.$whitespace.$regex_email_href/* 3,5,6 */.$whitespace.$regex_attributes/* 7 */.">(.*?)<\/a>/i";
         $tag_replacement = "/<a\s+".$regex_attributes/* 1 */.$whitespace.$regex_email_href/* 3,5,6 */.$whitespace.$regex_attributes/* 7 */.">(.*?)<\/a>/i";
 
         // First we convert all a tag Emails
         $html = preg_replace_callback($tag_regex, "self::callbackTag", $html);
+
         // Then we convert all plain text Emails
+        $plaintext_regex = "/\b(?<!value=['\"])".$regex_email."\b(?<!['\"])/i";
         $html = preg_replace_callback($plaintext_regex, "self::callbackPlainText", $html);
 
         $list = array();
