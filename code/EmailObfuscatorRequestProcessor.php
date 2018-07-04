@@ -16,15 +16,18 @@ class EmailObfuscatorRequestProcessor implements RequestFilter
     public function postRequest(SS_HTTPRequest $request, SS_HTTPResponse $response, DataModel $model)
     {
         if (preg_match('/text\/html/', $response->getHeader('Content-Type')) && $request->routeParams()['Controller'] != 'AdminRootController') {
-            list($head, $body) = explode('</head>', $response->getBody());
-            $html = array(
-                $head => $this->BasicObfuscateEmails($head),
-                $body => $this->JSObfuscateEmails($body)
-            );
+            $responseBody = $response->getBody();
+            if (strpos($responseBody, '</head>') !== false) {
+                list($head, $body) = explode('</head>', $responseBody);
+                $html = array(
+                    $head => $this->BasicObfuscateEmails($head),
+                    $body => $this->JSObfuscateEmails($body)
+                );
 
-            $response->setBody(
-                implode('</head>', $html)
-            );
+                $response->setBody(
+                    implode('</head>', $html)
+                );
+            }
         }
     }
 
